@@ -9,7 +9,6 @@ use App\Event\SyncEvent;
 use App\Event\LoginEvent;
 use App\Event\LogoutEvent;
 use App\Event\TransactionEvent;
-use App\Service\Request\LogoutRequest;
 use App\Service\Request\Request as BillingRequest;
 use App\Service\Request\TransactionRequest;
 use App\Service\Response\LoginResponse;
@@ -65,13 +64,6 @@ class EventFactory
             return new TransactionEvent($request, $response);
         }
 
-//        if ($methodName === self::METHOD_ROLLBACK) {
-//            $request = $serializer->deserialize($requestContent, RollbackRequest::class, 'json');
-//            $response = new Response($request->getId());
-//
-//            return new RollbackEvent($request, $response);
-//        }
         throw new BillingException(BillingException::OTHER_ERROR, "method not found");
-
     }
 }

@@ -4,8 +4,7 @@ namespace App\EventSubscriber;
 
 use App\Event\LogoutEvent;
 use App\Service\BillingException;
-use App\Service\Request\LogoutRequest;
-use App\Service\WLException;
+use App\Service\Request\Request;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class LogoutSubscriber implements EventSubscriberInterface
@@ -14,7 +13,7 @@ class LogoutSubscriber implements EventSubscriberInterface
 
     public function onLogout(LogoutEvent $event)
     {
-        /** @var LogoutRequest $request */
+        /** @var Request $request */
         $request = $event->getRequest();
 
         $user = $this->dataProvider->getUserByToken($request->getToken());

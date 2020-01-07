@@ -7,7 +7,6 @@ namespace App\Service;
 class BillingException extends \Exception
 {
     const TOKEN_NOT_FOUND = "TOKEN_NOT_FOUND";
-    const BET_EXCEED = "BET_EXCEED";
     const LOW_BALANCE = "LOW_BALANCE";
     const OTHER_ERROR = "OTHER_ERROR";
     /**

@@ -6,7 +6,6 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
- * @ORM\HasLifecycleCallbacks()
  */
 class User
 {
@@ -54,7 +53,6 @@ class User
     {
         $this->createdAt = new \DateTime();
         $this->updatedAt = new \DateTime();
-        $this->token = $this->generateToken();
     }
 
 
@@ -128,11 +126,6 @@ class User
     public function getUpdatedAt(): ?\DateTimeInterface
     {
         return $this->updatedAt;
-    }
-
-    public function generateToken()
-    {
-        return bin2hex(openssl_random_pseudo_bytes(16));
     }
 
     /**

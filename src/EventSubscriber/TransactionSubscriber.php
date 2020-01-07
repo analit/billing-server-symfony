@@ -6,7 +6,6 @@ use App\Event\TransactionEvent;
 use App\Service\BillingException;
 use App\Service\Request\TransactionRequest;
 use App\Service\Response\Response;
-use App\Service\WLException;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class TransactionSubscriber implements EventSubscriberInterface

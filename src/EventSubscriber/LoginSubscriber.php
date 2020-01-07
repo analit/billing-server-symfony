@@ -4,11 +4,9 @@ namespace App\EventSubscriber;
 
 use App\Event\LoginEvent;
 use App\Service\BillingException;
-use App\Service\DataProvider;
-use App\Service\WLException;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use App\Service\Request\LoginRequest;
+use App\Service\Request\Request;
 use App\Service\Response\LoginResponse;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class LoginSubscriber implements EventSubscriberInterface
 {
@@ -16,7 +14,7 @@ class LoginSubscriber implements EventSubscriberInterface
 
     public function onLogin(LoginEvent $event): void
     {
-        /** @var LoginRequest $request */
+        /** @var Request $request */
         $request = $event->getRequest();
         $user = $this->dataProvider->getUserByToken($request->getToken());
 
