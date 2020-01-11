@@ -25,7 +25,7 @@ class CacheSubscriberTest extends WebTestCase
             'token'    => '123456'
         ]));
 
-        $expected = [
+        $expectedCreateUser = [
             "status"   => "success",
             "message"  => "user was created",
             "currency" => "USD",
@@ -34,7 +34,7 @@ class CacheSubscriberTest extends WebTestCase
         ];
 
         $actual = json_decode($this->client->getResponse()->getContent(), true);
-        $this->assertEquals($expected, $actual);
+        $this->assertEquals($expectedCreateUser, $actual);
 
         $this->client->request("POST", "/api/cashin-user", [], [], [], json_encode([
             "token"  => "123456",
@@ -43,7 +43,7 @@ class CacheSubscriberTest extends WebTestCase
         ]));
 
         $actual = json_decode($this->client->getResponse()->getContent(), true);
-        $this->assertEquals($expected/** create-user */, $actual);
+        $this->assertEquals($expectedCreateUser, $actual);
 
         $this->client->request("POST", "/api/cashin-user", [], [], [], json_encode([
             "token"  => "123457", /** not exists */
@@ -51,13 +51,13 @@ class CacheSubscriberTest extends WebTestCase
             "id"     => 123457
         ]));
 
-        $expected = [
+        $expectedError = [
             "status"  => "error",
             "message" => "user not found"
         ];
 
         $actual = json_decode($this->client->getResponse()->getContent(), true);
-        $this->assertEquals($expected, $actual);
+        $this->assertEquals($expectedError, $actual);
 
         $this->client->request("POST", "/api/cashin-user", [], [], [], json_encode([
             "token"  => "123456", /** real */
@@ -65,7 +65,7 @@ class CacheSubscriberTest extends WebTestCase
             "id"     => 123457
         ]));
 
-        $expected = [
+        $expectedCashIn = [
             "status"   => "success",
             "message"  => "balance was updated",
             "token"    => "123456",
@@ -74,7 +74,7 @@ class CacheSubscriberTest extends WebTestCase
         ];
 
         $actual = json_decode($this->client->getResponse()->getContent(), true);
-        $this->assertEquals($expected, $actual);
+        $this->assertEquals($expectedCashIn, $actual);
     }
 
     public function testBillingCache()
