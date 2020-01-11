@@ -137,7 +137,7 @@ class ApiController extends AbstractController
             'message'  => 'balance was updated',
             'currency' => $user->getCurrency(),
             'balance'  => $user->getBalance(),
-            'wlid'     => $user->getId()
+            'token'    => $user->getToken()
         ], Response::HTTP_OK, ['Access-Control-Allow-Origin' => '*']);
     }
 

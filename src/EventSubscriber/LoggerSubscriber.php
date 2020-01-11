@@ -39,7 +39,7 @@ class LoggerSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            RequestEvent::class  => 'onRequestEvent',
+            RequestEvent::class  => ['onRequestEvent', 8],
             ResponseEvent::class => 'onResponseEvent'
         ];
     }

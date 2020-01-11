@@ -19,11 +19,7 @@ class ApiCacheSubscriber implements EventSubscriberInterface
     /**
      * @var array
      */
-    private $loggerRoutes = ['create_user', 'cashin_user', 'cashout_user'];
-    /**
-     * @var string
-     */
-    private $apiId;
+    protected $cachedRoutes = ['create_user', 'cashin_user', 'cashout_user'];
 
     /**
      * @var CacheItem
@@ -43,7 +39,7 @@ class ApiCacheSubscriber implements EventSubscriberInterface
     public function onRequestEvent(RequestEvent $event)
     {
         $request = $event->getRequest();
-        if (!in_array($request->attributes->get("_route"), $this->loggerRoutes)) {
+        if (!in_array($request->attributes->get("_route"), $this->cachedRoutes)) {
             return;
         }
 
@@ -52,9 +48,9 @@ class ApiCacheSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $apiId = self::CACHE_PREFIX . $content->id;
+        $itemId = static::CACHE_PREFIX . $content->id;
 
-        $this->cacheValue = $this->cache->getCache()->getItem($apiId);
+        $this->cacheValue = $this->cache->getCache()->getItem($itemId);
 
         if (!$this->cacheValue->isHit()) {
             return;
@@ -71,12 +67,19 @@ class ApiCacheSubscriber implements EventSubscriberInterface
         }
 
         $response = $event->getResponse();
-        if ($response->getStatusCode() !== Response::HTTP_OK) {
+        if ($this->isResponseError($response)) {
             return;
         }
 
         $this->cacheValue->set($response->getContent());
         $this->cache->getCache()->save($this->cacheValue);
+    }
+
+    public function isResponseError(Response $response): bool
+    {
+        $responseContent = json_decode($response->getContent());
+
+        return $responseContent->status && $responseContent->status === 'error';
     }
 
     public static function getSubscribedEvents()
